@@ -1,7 +1,7 @@
 import './../../style/style.scss';
 import './Header.scss';
 
-const Header = () => {
+const Header = ({onShowModal}) => {
   return (
     <header>
       <div className="container">
@@ -21,7 +21,7 @@ const Header = () => {
                 </div>
 
                 <div className="my-account">
-                    <button className="my-account__btn">LOG IN</button>
+                    <button className="my-account__btn" onClick={onShowModal}>LOG IN</button>
                     <button className="my-account__btn">SIGN IN</button>
                 </div>
             </div>
