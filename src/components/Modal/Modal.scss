@@ -1,0 +1,35 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background-color: rgba($color: #000, $alpha: 0.4);
+  z-index: 3;
+}
+
+.modal-close {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  background: url('./../../img/icons/close.svg');
+  background-size: 20px;
+  top: 10px;
+  right: 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.modal-content {
+  z-index: 4;
+  width: 500px;
+  background-color: #181818;
+  position: relative;
+}
