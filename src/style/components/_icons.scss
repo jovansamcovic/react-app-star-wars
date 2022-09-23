@@ -1,0 +1,68 @@
+.icon {
+  display: inline-block;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 10px;
+
+
+  &.facebook {
+    width: 30px;
+    height: 30px;
+    background-image: url('./../../img/icons/facebook.svg');
+  }
+
+  &.instagram {
+    width: 30px;
+    height: 30px;
+    background-image: url('./../../img/icons/instagram.svg');
+  }
+
+  &.twitter {
+    width: 30px;
+    height: 30px;
+    background-image: url('./../../img/icons/twitter.svg');
+  }
+
+  &.youtube {
+    width: 30px;
+    height: 30px;
+    background-image: url('./../../img/icons/youtube.svg');
+  }
+
+
+  &.kids {
+    position: relative;
+    width: 60px;
+    height: 22px;
+    border-radius: 10px;
+    background-color: #7a7a7a;
+
+    &::before {
+      content: "KIDS";
+      position: absolute;
+      color: #000;
+      font-weight: 700;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: -10px;
+      width: 1px;
+      height: 40px;
+      background-color: #7a7a7a;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &.search {
+    width: 20px;
+    height: 20px;
+    background-image: url('./../../img/icons/search.svg')
+  }
+}
