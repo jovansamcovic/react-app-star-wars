@@ -1,5 +1,6 @@
 import './style/style.scss';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
        <main className="main">
 
        </main>
+       <Footer />
     </div>
   );
 }
