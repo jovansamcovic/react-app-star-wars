@@ -13,14 +13,16 @@
 .legal {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   color: #757575;
   font-weight: 700;
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 16px;
+  line-height: 16px;
+  white-space: nowrap;
 
   &__item {
-    padding: 5px 10px;
+    padding: 5px;
     border-right: 1px solid #757575;
   }
 }

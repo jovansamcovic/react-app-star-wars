@@ -1,10 +1,10 @@
 import './style/style.scss';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import Nav from './components/Nav/Nav';
 import Home from './pages/Home';
 import Modal from './components/Modal/Modal';
 import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
 
@@ -18,12 +18,15 @@ function App() {
 
     <div className="app">
       {showModal && <Modal onCloseModal={showModalHandler} />}
-       <Header onShowModal = {showModalHandler}/>
-       <main className="main">
-        <Nav />
-        <Home />
-       </main>
-       <Footer />
+      <Header onShowModal={showModalHandler} />
+      <main className="main">
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+          </Routes>
+        </Router>
+      </main>
+      <Footer />
     </div>
   );
 }
