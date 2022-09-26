@@ -1,5 +1,4 @@
 import Carousel from "../components/Carousel/Carousel";
-import Nav from "../components/Nav/Nav";
 import './../style/style.scss';
 
 import card1 from './../img/cards/card1.webp';
@@ -10,7 +9,6 @@ import card4 from './../img/cards/card4.jpg';
 const Home = () => {
   return (
     <>
-      <Nav />
       <Carousel />
 
       <div className="container">

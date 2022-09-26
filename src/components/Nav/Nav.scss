@@ -38,6 +38,14 @@
       transform: translateX(-50%);
     }
 
+    &.active {
+      color: #fff;
+
+      &::before {
+        visibility: visible;
+      }
+    }
+
     &:hover {
       color: #fff;
 

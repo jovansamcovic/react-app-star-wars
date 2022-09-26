@@ -1,7 +1,8 @@
 import './../../style/style.scss';
 import './Header.scss';
 
-const Header = ({onShowModal}) => {
+const Header = ({onShowLogin, onShowRegistration, loggedUser,onLogout}) => {
+
   return (
     <header>
       <div className="container">
@@ -21,8 +22,20 @@ const Header = ({onShowModal}) => {
                 </div>
 
                 <div className="my-account">
-                    <button className="my-account__btn" onClick={onShowModal}>LOG IN</button>
-                    <button className="my-account__btn">SIGN IN</button>
+                  {loggedUser.login ? (
+                     <div className='my-account__wrap'>
+                     <div className='my-account__user'>
+                       <span className='my-account__user-logo'></span>
+                       <span className='my-account__user-name'>{loggedUser.display}</span>
+                     </div>
+                     <button className='my-account__btn' onClick={onLogout}>Logout</button>
+                     </div>
+                  ): (
+                    <div className='my-account__wrap'>
+                    <button className="my-account__btn" onClick={onShowLogin}>LOG IN</button>
+                    <button className="my-account__btn" onClick={onShowRegistration}>SIGN IN</button>
+                  </div>
+                  )}
                 </div>
             </div>
         </div>

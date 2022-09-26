@@ -1,8 +1,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px;
+  padding: 20px;
 
   &__item {
     width: 280px;
@@ -32,6 +31,27 @@
 .my-account {
   margin-top: 10px;
 
+  &__wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  &__user {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+
+    &-logo {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background-image: url('./../../img/icons/user.svg');
+      background-position: center;
+      background-size: 20px;
+    }
+  }
+
   &__btn {
     font-size: 16px;
     color: #757575;
@@ -39,6 +59,7 @@
     font-weight: 700;
     cursor: pointer;
     padding: 10px 20px;
+    text-transform: uppercase;
 
     &+& {
       margin-left: 10px;
