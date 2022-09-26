@@ -64,13 +64,13 @@ const Carousel = () => {
     slider.style.transform = `translateX(-${current}00%)`
   },[current])
 
-  // useEffect(() => {
-  //   intervalSlider.current =  setInterval(() => {
-  //       setCurrent(current => current === carouselData.length - 1 ? 0 : current + 1);
-  //   },6000)
+  useEffect(() => {
+    intervalSlider.current =  setInterval(() => {
+        setCurrent(current => current === carouselData.length - 1 ? 0 : current + 1);
+    },20000)
 
-  //   return () => clearInterval(intervalSlider.current);
-  // })
+    return () => clearInterval(intervalSlider.current);
+  })
 
   return (
     <div className="carousel">
