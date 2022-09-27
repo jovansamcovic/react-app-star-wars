@@ -1,0 +1,30 @@
+.list {
+  width: 100%;
+  padding: 20px;
+  color: #fff;
+
+  &__item {
+    background-color: #151515;
+    cursor: pointer;
+
+    a {
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      padding: 20px;
+    }
+
+    &+& {
+      margin-top: 10px;
+    }
+
+    &-title {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    &-subtitle {
+      font-size: 18px;
+    }
+  }
+}

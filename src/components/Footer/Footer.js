@@ -7,11 +7,11 @@ const Footer = () => {
       <div className="footer">
         <h4 className="footer__title">Follow Star Wors</h4>
         <div className="social-network">
-            <i className="icon facebook"></i>
-            <i className="icon instagram"></i>
-            <i className="icon twitter"></i>
-            <i className="icon youtube"></i>
-            <i className="icon kids"></i>
+          <i className="icon facebook"></i>
+          <i className="icon instagram"></i>
+          <i className="icon twitter"></i>
+          <i className="icon youtube"></i>
+          <i className="icon kids"></i>
         </div>
         <p className="footer__rights">TM & Lucasfilm Ltd. All Rights Reserved</p>
         <ul className="legal">

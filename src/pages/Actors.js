@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import './../style/style.scss';
 import axios from 'axios';
-import List from '../components/List/List';
 import Loader from '../components/Loader/Loader';
+import { NavLink } from 'react-router-dom';
 
 const Actors = () => {
 
@@ -15,12 +15,12 @@ const Actors = () => {
     const res = await actorsList.data;
 
     setActors(res.results);
+    setIsLoading(false);
   }
 
   useEffect(() => {
     const source = sourceRef.current;
     getActors();
-    setIsLoading(false);
 
     return () => {
       if (source) source.cancel("Landing Component got unmounted");
@@ -31,7 +31,21 @@ const Actors = () => {
   return (
     <div className="container">
       <div className="starships">
-        {!isLoading && <List array={actors} />}
+        {!isLoading &&
+            <ul className='list'>
+            {
+              actors.map((actor) => {
+                return (
+                  <li className='list__item' key={Math.random()}>
+                    <NavLink to={`/actors/${actor.url.match("[0-9]")}`}>
+                       <span className='list__item-title'>{actor.name}</span>
+                    </NavLink>
+                  </li>
+                )
+              })
+            }
+          </ul>
+        }
         {isLoading && <Loader />}
       </div>
     </div>
