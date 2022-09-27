@@ -10,24 +10,40 @@
     width: 26px;
     height: 26px;
     background-image: url('./../../img/icons/facebook.svg');
+
+    &:hover {
+      background-image: url('./../../img/icons/facebook-active.svg');
+    }
   }
 
   &.instagram {
     width: 26px;
     height: 26px;
     background-image: url('./../../img/icons/instagram.svg');
+
+    &:hover {
+      background-image: url('./../../img/icons/instagram-active.svg');
+    }
   }
 
   &.twitter {
     width: 26px;
     height: 26px;
     background-image: url('./../../img/icons/twitter.svg');
+
+    &:hover {
+      background-image: url('./../../img/icons/twitter-active.svg');
+    }
   }
 
   &.youtube {
     width: 26px;
     height: 26px;
     background-image: url('./../../img/icons/youtube.svg');
+
+    &:hover {
+      background-image: url('./../../img/icons/youtube-active.svg');
+    }
   }
 
 
@@ -57,6 +73,10 @@
       background-color: #7a7a7a;
       top: 50%;
       transform: translateY(-50%);
+    }
+
+    &:hover {
+      background-color: #fff;
     }
   }
 
