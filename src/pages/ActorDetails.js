@@ -75,7 +75,7 @@ const ActorDetails = () => {
               {
                 films.map((film) => {
                   return (
-                  <div className="box">
+                  <div className="box" key={Math.random()}>
                       <div className="box__title">{film.title}</div>
                       <div className="box__content">
                         <div className="box__item">Episode: {film.episode_id}</div>
@@ -100,7 +100,7 @@ const ActorDetails = () => {
               {
                 starships.map((starship) => {
                   return (
-                    <div className="box">
+                    <div className="box" key={Math.random()}>
                       <div className="box__title">{starship.name}</div>
                       <div className="box__content">
                         <div className="box__item">Model: {starship.model}</div>
