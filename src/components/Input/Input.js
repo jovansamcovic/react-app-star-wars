@@ -2,17 +2,21 @@ import './Input.scss';
 import './../../style/style.scss';
 
 const Input = (props) => {
+
+
+
   return (
-    <div className='form__box'>
+    <div className={props.errorMessage ? 'form__box error': 'form__box'}>
       <input className='form__input'
         placeholder= {props.placeholder}
-        type={props.type}
         name = {props.name}
         value = {props.value}
         onChange = {props.onChange}
         onBlur={props.onBlur}
+        ref={props.inputRef}
+        type={props.type}
       />
-      <span className='form__error'>{props.errorMessage}</span>
+      {props.errorMessage && <span className='form__error'>{props.errorMessage}</span>}
     </div>
   )
 };

@@ -79,9 +79,16 @@ const Carousel = () => {
         <div className="carousel__list" id='carousel__list' style={{transform: `translate(-${current * 100}%)`}}>
           {
             carouselData.map((item) => {
+              let fontColor = item.theme === "dark" ? "#000" : "#fff";
+
               return (
                 <div className="carousel__item" key={Math.random()}>
-                <img className="carousel__img" src={item.image} alt="Error"/>
+                  <img className="carousel__img" src={item.image} alt="Error"/>
+                  <div className='carousel__info'style={{color: fontColor}}>
+                      <h3 className='carousel__title'>{item.title}</h3>
+                      <p className='carousel__text'>{item.text}</p>
+                      <button style={{background: item.color}} className='carousel__btn'>{item.button}</button>
+                  </div>
               </div>
               )
             })

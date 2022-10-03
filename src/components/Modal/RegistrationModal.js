@@ -1,162 +1,197 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './../../style/style.scss';
 import './Modal.scss';
 import Input from '../Input/Input';
+import registrationValidation from '../../utils/registrationValidation';
 
 const RegistrationModal = ({ onCloseModal, onSubmitRegistrationForm }) => {
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(true);
 
 
-  const [values, setValues] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    displayname: "",
-    password: "",
-    confirmpassword: "",
-  });
+  const [firstname, setFirstname] = useState();
+  const [lastname, setLastname] = useState();
+  const [email, setEmail] = useState();
+  const [displayname, setDisplayname] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
-  const inputs = [
-    {
-      id: 1,
-      name: "firstname",
-      type: "text",
-      placeholder: "First Name",
-      errorMessage: "Username should be 3-16 characters and shouldn't include any special character!",
-      required: true
-    },
-    {
-      id: 2,
-      name: "lastname",
-      type: "text",
-      placeholder: "Last Name",
-      errorMessage: "Username should be 3-16 characters and shouldn't include any special character!",
-      required: true
-    },
-    {
-      id: 3,
-      name: "email",
-      type: "text",
-      placeholder: "Email",
-      errorMessage: "Username should be 3-16 characters and shouldn't include any special character!",
-      required: true
-    },
-    {
-      id: 4,
-      name: "displayname",
-      type: "text",
-      placeholder: "Display Name",
-      errorMessage: "Display should be 3-16 characters and shouldn't include any special character!",
-      required: true
-    },
-    {
-      id: 5,
-      name: "password",
-      type: "password",
-      placeholder: "Password",
-      errorMessage: "Username should be 3-16 characters and shouldn't include any special character!",
-      required: true
-    },
-    {
-      id: 6,
-      name: "confirmPassword",
-      type: "password",
-      placeholder: "Confirm  Password",
-      errorMessage: "Passwords don't match!",
-      required: true
-    },
-  ];
 
+  const [firstnameError, setFirstnameError] = useState(false);
+  const [lastnameError, setLastnameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [displaynameError, setDisplaynameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+
+  const firstnameRef = useRef();
+  const lastnameRef = useRef();
+  const emailRef = useRef();
+  const displaynameRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
+
+
+// first name
+  const firstnameChangeHandler = () => {
+    const {name, value}  = firstnameRef.current;
+    setFirstname(firstnameRef.current.value);
+
+    const error = registrationValidation(name, value);
+    setFirstnameError(error);
+    console.log(firstnameError);
+    if (error) {
+      firstnameRef.current.parentElement.classList.add("error");
+    } else {
+      firstnameRef.current.parentElement.classList.remove("error");
+    }
+  };
+
+
+  // last name
+  const lastnameChangeHandler = () => {
+    const {name, value}  = lastnameRef.current;
+    setLastname(lastnameRef.current.value);
+
+    const error = registrationValidation(name, value);
+    setLastnameError(error);
+
+    if (error) {
+      lastnameRef.current.parentElement.classList.add("error");
+    } else {
+      lastnameRef.current.parentElement.classList.remove("error");
+    }
+  };
+
+
+  // email
+  const emailChangeHandler = () => {
+    const {name, value}  = emailRef.current;
+    setEmail(emailRef.current.value);
+
+    const error = registrationValidation(name, value);
+    setEmailError(error);
+
+    if (error) {
+      emailRef.current.parentElement.classList.add("error");
+    } else {
+      emailRef.current.parentElement.classList.remove("error");
+    }
+  };
+
+
+  // displayname
+  const displaynameChangeHandler = () => {
+    const {name, value}  = displaynameRef.current;
+    setDisplayname(displaynameRef.current.value);
+
+    const error = registrationValidation(name, value);
+    setDisplaynameError(error);
+
+    if (error) {
+      displaynameRef.current.parentElement.classList.add("error");
+    } else {
+      displaynameRef.current.parentElement.classList.remove("error");
+    }
+  };
+
+
+  const passwordChangeHandler = () => {
+    const {name, value}  = passwordRef.current;
+    setPassword(passwordRef.current.value);
+
+    const error = registrationValidation(name, value);
+    setPasswordError(error);
+
+    if (error) {
+      passwordRef.current.parentElement.classList.add("error");
+    } else {
+      passwordRef.current.parentElement.classList.remove("error");
+    }
+  };
+
+
+  // confirm password
+  const confirmPasswordChangeHandler = () => {
+    const {name, value}  = confirmPasswordRef.current;
+    setConfirmPassword(confirmPasswordRef.current.value);
+
+    const error = registrationValidation(name, value, password);
+    setConfirmPasswordError(error);
+
+    if (error) {
+      confirmPasswordRef.current.parentElement.classList.add("error");
+    } else {
+      confirmPasswordRef.current.parentElement.classList.remove("error");
+    }
+  };
 
 
   const submitFormHandler = (e) => {
 
     e.preventDefault();
 
-    const newUser = {
-      firstname: values.firstname,
-      lastname: values.lastname,
-      email: values.email,
-      displayname: values.displayname,
-      password: values.password,
-    }
+    if ((firstname !== "" && lastname !== "" && email !== "" && displayname !== "" && password !== "" && confirmPassword !== "") &&
+    (firstnameError === "" && lastnameError === "" && emailError === "" && displaynameError === "" && passwordError === "" && confirmPasswordError === "")) {
+      setIsFormValid(true)
 
-    let users = [];
-    users = JSON.parse(localStorage.getItem('users'));
-    if (users) {
-      users = [...users, newUser]
+      const newUser = {
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        displayname: displayname,
+        password: password,
+      }
+
+      let users = [];
+      users = JSON.parse(localStorage.getItem('users'));
+      if (users) {
+        users = [...users, newUser]
+      } else {
+        users = [];
+        users.push(newUser);
+      }
+
+      localStorage.setItem('users', JSON.stringify(users));
+
+      onSubmitRegistrationForm();
+
     } else {
-      users = [];
-      users.push(newUser);
+      setIsFormValid(false);
+
+      if (!firstname) {
+        firstnameChangeHandler();
+      }
+
+      if (!lastname) {
+        lastnameChangeHandler();
+      }
+
+      if (!displayname) {
+        displaynameChangeHandler()
+      }
+
+      if (!email) {
+        emailChangeHandler()
+      }
+
+      if (!password) {
+        passwordChangeHandler()
+      }
+
+      if (!confirmPassword) {
+        confirmPasswordChangeHandler();
+      }
     }
-
-    localStorage.setItem('users', JSON.stringify(users));
-
-    onSubmitRegistrationForm();
   }
+
+
 
   const checkboxHandler = () => {
-    setShowPassword(!showPassword);
+    setShowPassword(true);
   }
 
-  const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  }
-
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-
-
-  const validatePassword = (password) => {
-    return String(password)
-      .toLowerCase()
-      .match(
-        /^[a-zA-Z0-9!@#$%^&*]{6,16}$/
-      );
-  }
-
-
-  const validateInput = (e) => {
-
-    let element = e.target;
-
-    if (element.name === "password" || element.name === "email") {
-      console.log("if");
-      if (element.name === "password") {
-        let isPasswordOK = validatePassword(element.value);
-        if (isPasswordOK) {
-          element.parentElement.classList.remove("error");
-        } else {
-          element.parentElement.classList.add("error");
-        }
-      }
-
-      if (element.name === "email") {
-        let isEmailOk = validateEmail(element.value);
-
-        if (isEmailOk) {
-          element.parentElement.classList.remove("error");
-        } else {
-          element.parentElement.classList.add("error");
-        }
-      }
-    } else {
-      let value = element.value;
-      if(value.length > 3)
-      {
-        element.parentElement.classList.remove("error");
-      }
-       else {
-        element.parentElement.classList.add("error");
-       }
-    }
-  };
 
   return (
     <div className="modal">
@@ -166,26 +201,70 @@ const RegistrationModal = ({ onCloseModal, onSubmitRegistrationForm }) => {
         <form className="form" onSubmit={submitFormHandler}>
           <div className="form__logo"></div>
           <h3 className="form__title">Create your account</h3>
-          {
-            inputs.map((input) => {
 
-              if (showPassword) {
-                if (input.type === "password") {
-                  input.type = "text";
-                }
-              }
+            <Input
+              placeholder={'First Name'}
+              type={'text'}
+              name={'firstname'}
+              value={firstname}
+              onChange = {firstnameChangeHandler}
+              errorMessage={firstnameError}
+              inputRef = {firstnameRef}
+            />
 
-              return (
-                <Input
-                key={input.id}
-                {...input}
-                value={values[input.name]}
-                onChange={onChange}
-                onBlur={validateInput}
-                />
-              )
-            })
-          }
+            <Input
+              placeholder={'Last Name'}
+              type={'text'}
+              name={'lastname'}
+              value={lastname}
+              onChange = {lastnameChangeHandler}
+              errorMessage={lastnameError}
+              inputRef={lastnameRef}
+            />
+
+          <Input
+              placeholder={'Email'}
+              type={'text'}
+              name={'email'}
+              value={email}
+              onChange = {emailChangeHandler}
+              errorMessage={emailError}
+              inputRef={emailRef}
+            />
+
+
+          <Input
+              placeholder={'Display Name'}
+              type={'text'}
+              name={'displayname'}
+              value={displayname}
+              onChange = {displaynameChangeHandler}
+              errorMessage={displaynameError}
+              inputRef={displaynameRef}
+            />
+
+            <Input
+              placeholder={'Password'}
+              type={showPassword ? 'text' : "password"}
+              name={'password'}
+              value={password}
+              onChange = {passwordChangeHandler}
+              errorMessage={passwordError}
+              inputRef={passwordRef}
+            />
+
+          <Input
+              placeholder={'Confirm Password'}
+              type={showPassword ? 'text' : "password"}
+              name={'confirmPassword'}
+              value={confirmPassword}
+              onChange={confirmPasswordChangeHandler}
+              errorMessage={confirmPasswordError}
+              inputRef={confirmPasswordRef}
+            />
+
+
+
           <div className="checkbox">
             <div className="checkbox__wrap">
               <input className="checkbox__input" id="checkbox" type="checkbox" onChange={checkboxHandler} />
@@ -194,8 +273,10 @@ const RegistrationModal = ({ onCloseModal, onSubmitRegistrationForm }) => {
             <span className="checkbox__title">Show Password</span>
           </div>
 
-          <button className='form__submit'>Create Account</button>
+          <button className="form__submit">Create Account</button>
           <div className='form__info'>Already have an account <button className='form__rederect'>Sign In</button></div>
+
+           {!isFormValid &&  <div className='form__msg'>Validation errors occurred. Please confirm the fields and submit again.</div>}
 
         </form>
       </div>
