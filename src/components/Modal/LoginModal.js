@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import './../../style/style.scss';
 import './Modal.scss';
 import Input from '../Input/Input';
@@ -7,11 +7,12 @@ const LoginModal = ({ onCloseModal, onUserLogin }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
 
   const emailRef = useRef();
   const passwordRef = useRef();
-
 
 
   const [loginCorrect, setLoginCorrect] = useState(true);
@@ -20,32 +21,47 @@ const LoginModal = ({ onCloseModal, onUserLogin }) => {
   const emailChangeHandler = () => {
     setEmail(emailRef.current.value);
     emailRef.current.parentElement.classList.remove("error");
+    setEmailError("");
   }
 
   const passwordChangeHandler = () => {
     setPassword(passwordRef.current.value);
     passwordRef.current.parentElement.classList.remove("error");
+    setPasswordError("");
   }
 
   const formHandler = (event) => {
     event.preventDefault()
     let users = [];
+    let existUser = false;
     users = JSON.parse(localStorage.getItem('users'));
 
     if (users) {
       users.forEach(user => {
-        if (user.email === email && user.password === password) {
-          onUserLogin({ display: user.displayname, login: true });
-          setLoginCorrect(true);
-        } else {
-          setLoginCorrect(false);
-          emailRef.current.parentElement.classList.add("error");
-          passwordRef.current.parentElement.classList.add("error");
+        if (user.email === email) {
+          existUser = true;
+
+          if (user.password === password) {
+            onUserLogin({ display: user.displayname, login: true });
+            setLoginCorrect(true);
+          } else {
+            setPasswordError("Wrong password!");
+            passwordRef.current.parentElement.classList.add("error");
+            setLoginCorrect(false);
+            setPassword("");
+          }
         }
       });
     }
 
-    setLoginCorrect(false);
+    if(!existUser) {
+      setLoginCorrect(false);
+      setEmailError("This email doesn't exist!");
+      setPassword("");
+      setEmail("");
+      emailRef.current.parentElement.classList.add("error");
+      passwordRef.current.parentElement.classList.add("error");
+    }
   };
 
 
@@ -67,6 +83,7 @@ const LoginModal = ({ onCloseModal, onUserLogin }) => {
              onChange={emailChangeHandler}
              name="email"
              inputRef={emailRef}
+             errorMessage={emailError}
           />
 
           <Input
@@ -76,12 +93,11 @@ const LoginModal = ({ onCloseModal, onUserLogin }) => {
             onChange={passwordChangeHandler}
             name="password"
             inputRef={passwordRef}
+            errorMessage={passwordError}
           />
 
 
           <button className="form__submit" type='submit'>Sign in</button>
-
-          {!loginCorrect && <div className='form__msg'>Incorrect email or password</div>}
 
           <div className="form__help">
             <a href="!#" className="form__help-link">Need help signing in?</a>
