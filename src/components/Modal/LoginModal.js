@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './../../style/style.scss';
 import './Modal.scss';
 import Input from '../Input/Input';
@@ -7,47 +7,46 @@ const LoginModal = ({ onCloseModal, onUserLogin }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+
+
   const [loginCorrect, setLoginCorrect] = useState(true);
 
 
-  const formHandler = (event) => {
+  const emailChangeHandler = () => {
+    setEmail(emailRef.current.value);
+    emailRef.current.parentElement.classList.remove("error");
+  }
 
+  const passwordChangeHandler = () => {
+    setPassword(passwordRef.current.value);
+    passwordRef.current.parentElement.classList.remove("error");
+  }
+
+  const formHandler = (event) => {
     event.preventDefault()
     let users = [];
     users = JSON.parse(localStorage.getItem('users'));
 
-    users.forEach(user => {
-      if (user.email === email && user.password === password) {
-        onUserLogin({ display: user.displayname, login: true });
-        setLoginCorrect(true);
-      } else {
-        setLoginCorrect(false);
-      }
+    if (users) {
+      users.forEach(user => {
+        if (user.email === email && user.password === password) {
+          onUserLogin({ display: user.displayname, login: true });
+          setLoginCorrect(true);
+        } else {
+          setLoginCorrect(false);
+          emailRef.current.parentElement.classList.add("error");
+          passwordRef.current.parentElement.classList.add("error");
+        }
+      });
+    }
 
-      console.log("else: isCorrect: " +loginCorrect);
-    });
+    setLoginCorrect(false);
   };
-
-
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-
-
-
-  const validateInput = (e) => {
-      let isEmailOk = validateEmail(e.target.value);
-
-      if (isEmailOk) {
-        e.target.parentElement.classList.remove("error");
-      } else {
-        e.target.parentElement.classList.add("error");
-      }
-  }
 
 
 
@@ -65,19 +64,18 @@ const LoginModal = ({ onCloseModal, onUserLogin }) => {
              type="text"
              placeholder="Email"
              value={email}
-             onChange={(e) => setEmail(e.target.value)}
-             onBlur={validateInput}
+             onChange={emailChangeHandler}
              name="email"
-             errorMessage="Wrong email"
+             inputRef={emailRef}
           />
 
           <Input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={passwordChangeHandler}
             name="password"
-            errorMessage="Sorry, your password was incorrect."
+            inputRef={passwordRef}
           />
 
 

@@ -31,10 +31,6 @@
             color: red;
           }
         }
-
-        &__error {
-          display: block;
-        }
       }
     }
   }
@@ -50,7 +46,6 @@
   }
 
   &__error {
-    display: none;
     color: #ff0000;
     font-size: 12px;
   }
@@ -64,6 +59,11 @@
     font-weight: 500;
     cursor: pointer;
     transition: all .3s;
+
+    &.disabled {
+      opacity: 0.2;
+      pointer-events: none;
+    }
 
     &:active {
       transform: scale(0.9);
