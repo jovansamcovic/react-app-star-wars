@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import './../../style/style.scss';
 import './Modal.scss';
 import Input from '../Input/Input';
