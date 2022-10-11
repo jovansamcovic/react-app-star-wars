@@ -1,58 +1,25 @@
 import { useParams } from 'react-router-dom';
 import './../style/style.scss';
-import getData from '../utils/getData';
-import { useEffect, useRef, useState } from 'react';
-import Loader from '../components/Loader/Loader';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getActorDetailsFetch } from './../actions';
 
 const ActorDetails = () => {
 
   const { id } = useParams();
-  const [actor, setActor] = useState();
-  const [films, setFilms] = useState();
-  const [starships, setStarships] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const sourceRef = useRef(axios.CancelToken.source());
-
-  const retrieveList = async (array) => {
-    let dataList = [];
-    for (let url of array) {
-      dataList = [...dataList, await getData(`${url}`)];
-    };
-    return dataList;
-  }
+  const actor = useSelector(state => state.appReducer.actor);
+  const films = useSelector(state => state.appReducer.actor.films)
+  const starships = useSelector(state => state.appReducer.actor.starships)
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
-
-    const source = sourceRef.current;
-
-    const setData = async () => {
-        const actorData = await getData('https://swapi.dev/api/people/'+id);
-        setActor(actorData);
-
-        const filmsData = await retrieveList(actorData.films);
-        setFilms(filmsData);
-
-        const starshipData = await retrieveList(actorData.starships)
-        setStarships(starshipData);
-
-        setIsLoading(false);
-    }
-
-
-    setData();
-
-    return () => {
-      if (source) source.cancel("Landing Component got unmounted");
-    }
-
-  },[id])
+    dispatch(getActorDetailsFetch(id));
+  },[id, dispatch])
 
   return (
     <div className='container'>
 
-      {isLoading && <Loader />}
       {actor ? (
         <div className='actor'>
         <h3 className='actor__title'>{actor.name}</h3>
@@ -68,12 +35,12 @@ const ActorDetails = () => {
       ): null}
 
       {
-        films !== null && films !== undefined ? (
+        films ? (
           <>
           <h3 className="title">Films</h3>
             <div className="box-list">
               {
-                films.map((film) => {
+                actor.films.map((film) => {
                   return (
                   <div className="box" key={Math.random()}>
                       <div className="box__title">{film.title}</div>
@@ -93,12 +60,12 @@ const ActorDetails = () => {
       }
 
       {
-        starships !== null && starships !== undefined && !isLoading ? (
+        starships ? (
           <>
               <h3 className="title">Starships</h3>
               <div className="box-list">
               {
-                starships.map((starship) => {
+                actor.starships.map((starship) => {
                   return (
                     <div className="box" key={Math.random()}>
                       <div className="box__title">{starship.name}</div>
