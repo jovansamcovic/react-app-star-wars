@@ -2,54 +2,29 @@ import { useParams } from "react-router-dom";
 import './../style/style.scss';
 import { useEffect, useRef, useState } from "react";
 import defaultImage from './../img/default.jpg';
-import axios from "axios";
-import Loader from "../components/Loader/Loader";
-import getData from "../utils/getData";
+import { useDispatch, useSelector } from "react-redux";
+import { getStarshipDetailsFetch } from './../actions';
 
 const StarshipDetails = () => {
 
   const { id } = useParams();
   const [imgSrc, setImgSrc] = useState(`https://starwars-visualguide.com/assets/img/starships/${id}.jpg`);
-  const [starship, setStarship] = useState([]);
-  const [films, setFilms] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const sourceRef = useRef(axios.CancelToken.source());
-
-  const retrieveList = async (array) => {
-    let dataList = [];
-    for (let url of array) {
-      dataList = [...dataList, await getData(`${url}`)];
-    };
-    return dataList;
-  }
+  const dispatch = useDispatch();
+  const starship = useSelector(state => state.appReducer.starship);
+  const films = useSelector(state => state.appReducer.starship.films);
 
 
   useEffect(() => {
-    const source = sourceRef.current;
-
-    const setData = async () => {
-      const res = await getData('https://swapi.dev/api/starships/' + id);
-      setStarship(res);
-
-      const list = await retrieveList(res.films);
-      setFilms(list);
-
-      setIsLoading(false);
-    }
-
-    setData();
-
-    return () => {
-      if (source) source.cancel("Landing Component got unmounted");
-    }
-  }, [id])
+    dispatch(getStarshipDetailsFetch(id));
+  }, [id, dispatch])
 
   return (
     <div className="container">
+
       <div className="starship">
-        {!isLoading && <img className="starship__img" src={imgSrc} alt="error" onError={() => setImgSrc(defaultImage)} />}
-        {isLoading && <Loader />}
-        {starship && !isLoading &&
+        <img className="starship__img" src={imgSrc} alt="error" onError={() => setImgSrc(defaultImage)} />
+
+        {starship &&
           <div className="starship__details" key={Math.random()}>
             <h3 className="starship__title">{starship.name}</h3>
             <p className="starship__info">
@@ -73,7 +48,7 @@ const StarshipDetails = () => {
 
 
       {
-        films !== null && films !== undefined && !isLoading ? (
+        films ? (
           <>
             <h3 className="title">Films</h3>
             <div className="box-list">
@@ -96,6 +71,7 @@ const StarshipDetails = () => {
           </>
         ) : (null)
       }
+
     </div>
   )
 };

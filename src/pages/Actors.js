@@ -1,52 +1,37 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import './../style/style.scss';
-import axios from 'axios';
-import Loader from '../components/Loader/Loader';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getActorsFetch } from './../actions';
 
 const Actors = () => {
 
-  const [actors, setActors] = useState([]);
-  const sourceRef = useRef(axios.CancelToken.source());
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  let actors = useSelector(state => state.appReducer.actors);
 
-  const getActors = async () => {
-    const actorsList = await axios.get('https://swapi.dev/api/people/');
-    const res = await actorsList.data;
-
-    setActors(res.results);
-    setIsLoading(false);
-  }
 
   useEffect(() => {
-    const source = sourceRef.current;
-    getActors();
-
-    return () => {
-      if (source) source.cancel("Landing Component got unmounted");
-      setActors([]);
-    }
-  }, [])
+    dispatch(getActorsFetch());
+  }, [dispatch])
 
   return (
     <div className="container">
       <div className="starships">
-        {!isLoading &&
-            <ul className='list'>
-            {
-              actors.map((actor) => {
-                return (
-                  <li className='list__item' key={Math.random()}>
-                    <NavLink to={`/actors/${actor.url.match("[0-9]")}`}>
-                       <span className='list__item-title'>{actor.name}</span>
-                    </NavLink>
-                  </li>
-                )
-              })
-            }
-          </ul>
+        {actors &&
+          <ul className='list'>
+          {
+            actors.map((actor) => {
+              return (
+                <li className='list__item' key={Math.random()}>
+                  <NavLink to={`/actors/${actor.url.match("[0-9]")}`}>
+                    <span className='list__item-title'>{actor.name}</span>
+                  </NavLink>
+                </li>
+              )
+            })
+          }
+      </ul>
         }
-        {isLoading && <Loader />}
       </div>
     </div>
   )
