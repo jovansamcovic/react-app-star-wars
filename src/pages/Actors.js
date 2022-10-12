@@ -3,11 +3,13 @@ import './../style/style.scss';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getActorsFetch } from './../actions';
+import Loader from './../components/Loader/Loader';
 
 const Actors = () => {
 
   const dispatch = useDispatch();
   let actors = useSelector(state => state.appReducer.actors);
+  const isLoading = useSelector(state => state.appReducer.isLoading);
 
 
   useEffect(() => {
@@ -17,7 +19,8 @@ const Actors = () => {
   return (
     <div className="container">
       <div className="starships">
-        {actors &&
+        {isLoading && <Loader />}
+        {actors && !isLoading &&
           <ul className='list'>
           {
             actors.map((actor) => {
