@@ -3,6 +3,7 @@ import './../style/style.scss';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getActorDetailsFetch } from './../actions';
+import Loader from '../components/Loader/Loader';
 
 const ActorDetails = () => {
 
@@ -11,6 +12,7 @@ const ActorDetails = () => {
   const films = useSelector(state => state.appReducer.actor.films)
   const starships = useSelector(state => state.appReducer.actor.starships)
   const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.appReducer.isLoading);
 
 
   useEffect(() => {
@@ -20,7 +22,8 @@ const ActorDetails = () => {
   return (
     <div className='container'>
 
-      {actor ? (
+      {isLoading && <Loader />}
+      {actor && !isLoading &&
         <div className='actor'>
         <h3 className='actor__title'>{actor.name}</h3>
         <div className='actor__details'>
@@ -32,10 +35,10 @@ const ActorDetails = () => {
             <div className='actor__item'>Gender: {actor.gender}</div>
         </div>
       </div>
-      ): null}
+      }
 
       {
-        films ? (
+        films && !isLoading &&
           <>
           <h3 className="title">Films</h3>
             <div className="box-list">
@@ -56,35 +59,33 @@ const ActorDetails = () => {
               }
         </div>
         </>
-        ) : (null)
+
       }
 
       {
-        starships ? (
-          <>
-              <h3 className="title">Starships</h3>
-              <div className="box-list">
-              {
-                actor.starships.map((starship) => {
-                  return (
-                    <div className="box" key={Math.random()}>
-                      <div className="box__title">{starship.name}</div>
-                      <div className="box__content">
-                        <div className="box__item">Model: {starship.model}</div>
-                        <div className="box__item">Manufacturer: {starship.manufacturer}</div>
-                        <div className="box__item">Cost in credits: {starship.cost_in_credits}</div>
-                        <div className="box__item">length: {starship.length}</div>
-                        <div className="box__item">Max atmosphering speed: {starship.max_atmosphering_speed}</div>
-                        <div className="box__item">Crew: {starship.crew}</div>
-                      </div>
+        starships && !isLoading &&
+        <>
+          <h3 className="title">Starships</h3>
+          <div className="box-list">
+          {
+            actor.starships.map((starship) => {
+              return (
+                <div className="box" key={Math.random()}>
+                  <div className="box__title">{starship.name}</div>
+                  <div className="box__content">
+                    <div className="box__item">Model: {starship.model}</div>
+                    <div className="box__item">Manufacturer: {starship.manufacturer}</div>
+                    <div className="box__item">Cost in credits: {starship.cost_in_credits}</div>
+                    <div className="box__item">length: {starship.length}</div>
+                    <div className="box__item">Max atmosphering speed: {starship.max_atmosphering_speed}</div>
+                    <div className="box__item">Crew: {starship.crew}</div>
                   </div>
-                  )
-                })
-              }
               </div>
-
-          </>
-        ) : null
+              )
+            })
+          }
+          </div>
+      </>
       }
 
     </div>

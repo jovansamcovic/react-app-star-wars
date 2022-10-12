@@ -10,6 +10,8 @@ export const GET_ACTOR_DETAILS_FETCH_SUCCESS = "GET_ACTOR_DETAILS_FETCH_SUCCESS"
 export const GET_STARSHIP_DETAILS_FETCH = "GET_STARSHIP_DETAILS_FETCH";
 export const GET_STARSHIP_DETAILS_FETCH_SUCCESS = "GET_STARSHIP_DETAILS_FETCH_SUCCESS";
 
+export const SET_IS_LOADING = 'SET_IS_LOADING';
+
 export const getActorsFetch = () => ({
   type: GET_ACTORS_FETCH
 })
@@ -28,3 +30,6 @@ export const getStarshipDetailsFetch = (id) => ({
   payload: id
 })
 
+export const setIsLoading = () => ({
+  type: SET_IS_LOADING
+})

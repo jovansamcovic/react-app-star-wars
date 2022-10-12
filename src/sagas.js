@@ -11,7 +11,8 @@ import {
   GET_ACTOR_DETAILS_FETCH,
   GET_ACTOR_DETAILS_FETCH_SUCCESS,
   GET_STARSHIP_DETAILS_FETCH,
-  GET_STARSHIP_DETAILS_FETCH_SUCCESS
+  GET_STARSHIP_DETAILS_FETCH_SUCCESS,
+  SET_IS_LOADING
 }  from './actions';
 
 
@@ -29,8 +30,10 @@ async function actorDetailsFetch (id) {
 }
 
 function* getActorDetailsFetch (action) {
+  yield put({type: SET_IS_LOADING, isLoading: true});
   const actor = yield call(actorDetailsFetch, action.payload)
   yield put({type: GET_ACTOR_DETAILS_FETCH_SUCCESS, actor: actor})
+  yield put({type: SET_IS_LOADING, isLoading: false});
 }
 //
 
@@ -45,18 +48,15 @@ async function starshipDetailsFetch (id) {
 }
 
 function* getStarshipDetailsFetch (action) {
+  yield put({type: SET_IS_LOADING, isLoading: true});
   const starship = yield call(starshipDetailsFetch, action.payload)
   yield put({type: GET_STARSHIP_DETAILS_FETCH_SUCCESS, starship: starship})
+  yield put({type: SET_IS_LOADING, isLoading: false});
 }
 
 //
 
-// GET ALL Actors
-async function  actorsFetch () {
-  const actors = await getData('https://swapi.dev/api/people/', true);
-  return actors;
-}
-//
+
 
 // GET ALL Starships
 async function  starshipsFetch () {
@@ -66,24 +66,30 @@ async function  starshipsFetch () {
 
 
 
-// GET ALL Actors
+// GET ALL Starships
 function* getStarshipsFetch () {
+  yield put({type: SET_IS_LOADING, isLoading: true});
   const starships = yield call(starshipsFetch);
   yield put({type: GET_STARSHIPS_FETCH_SUCCESS, starships: starships});
+  yield put({type: SET_IS_LOADING, isLoading: false});
 }
 //
 
 
 
-function* getActorsFetch () {
-  const actors = yield call(actorsFetch);
-  yield put({type: GET_ACTORS_FETCH_SUCCESS, actors: actors})
+// GET ALL Actors
+async function  actorsFetch () {
+  const actors = await getData('https://swapi.dev/api/people/', true);
+  return actors;
 }
 
-
-
-
-
+function* getActorsFetch () {
+  yield put({type: SET_IS_LOADING, isLoading: true});
+  const actors = yield call(actorsFetch);
+  yield put({type: GET_ACTORS_FETCH_SUCCESS, actors: actors})
+  yield put({type: SET_IS_LOADING, isLoading: false});
+}
+//
 
 
 function* Saga() {

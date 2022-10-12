@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import './../style/style.scss';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import defaultImage from './../img/default.jpg';
 import { useDispatch, useSelector } from "react-redux";
 import { getStarshipDetailsFetch } from './../actions';
+import Loader from "../components/Loader/Loader";
 
 const StarshipDetails = () => {
 
@@ -12,6 +13,8 @@ const StarshipDetails = () => {
   const dispatch = useDispatch();
   const starship = useSelector(state => state.appReducer.starship);
   const films = useSelector(state => state.appReducer.starship.films);
+  const isLoading = useSelector(state => state.appReducer.isLoading);
+
 
 
   useEffect(() => {
@@ -22,9 +25,11 @@ const StarshipDetails = () => {
     <div className="container">
 
       <div className="starship">
-        <img className="starship__img" src={imgSrc} alt="error" onError={() => setImgSrc(defaultImage)} />
+        {isLoading && <Loader />}
 
-        {starship &&
+        {!isLoading && <img className="starship__img" src={imgSrc} alt="error" onError={() => setImgSrc(defaultImage)} />}
+
+        {starship && !isLoading &&
           <div className="starship__details" key={Math.random()}>
             <h3 className="starship__title">{starship.name}</h3>
             <p className="starship__info">
@@ -46,9 +51,8 @@ const StarshipDetails = () => {
         }
       </div>
 
-
       {
-        films ? (
+        films && !isLoading &&
           <>
             <h3 className="title">Films</h3>
             <div className="box-list">
@@ -69,7 +73,6 @@ const StarshipDetails = () => {
               }
             </div>
           </>
-        ) : (null)
       }
 
     </div>
