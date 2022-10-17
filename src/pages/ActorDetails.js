@@ -1,19 +1,30 @@
-import { useParams } from 'react-router-dom';
+
 import './../style/style.scss';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getActorDetailsFetch } from './../actions';
+import { isLoading } from '../selectors';
+
 import Loader from '../components/Loader/Loader';
+
+import {
+  getActor,
+  getFilmsForActor,
+  getStarshipsForActor
+} from '../selectors';
 
 const ActorDetails = () => {
 
   const { id } = useParams();
-  const actor = useSelector(state => state.appReducer.actor);
-  const films = useSelector(state => state.appReducer.actor.films)
-  const starships = useSelector(state => state.appReducer.actor.starships)
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.appReducer.isLoading);
 
+  const Selectors = {
+    actor: useSelector(state => getActor(state)),
+    films: useSelector(state => getFilmsForActor(state)),
+    starships: useSelector(state => getStarshipsForActor(state)),
+    isLoading: useSelector((state) => isLoading(state))
+  }
 
   useEffect(() => {
     dispatch(getActorDetailsFetch(id));
@@ -22,28 +33,28 @@ const ActorDetails = () => {
   return (
     <div className='container'>
 
-      {isLoading && <Loader />}
-      {actor && !isLoading &&
+      {Selectors.isLoading && <Loader />}
+      {Selectors.actor && !Selectors.isLoading &&
         <div className='actor'>
-        <h3 className='actor__title'>{actor.name}</h3>
+        <h3 className='actor__title'>{Selectors.actor.name}</h3>
         <div className='actor__details'>
-            <div className='actor__item'>Height: {actor.height}</div>
-            <div className='actor__item'>Eye color: {actor.eye_color}</div>
-            <div className='actor__item'>Mass: {actor.mass}</div>
-            <div className='actor__item'>Birth Year: {actor.birth_year}</div>
-            <div className='actor__item'>Hair color {actor.hair_color}</div>
-            <div className='actor__item'>Gender: {actor.gender}</div>
+            <div className='actor__item'>Height: {Selectors.actor.height}</div>
+            <div className='actor__item'>Eye color: {Selectors.actor.eye_color}</div>
+            <div className='actor__item'>Mass: {Selectors.actor.mass}</div>
+            <div className='actor__item'>Birth Year: {Selectors.actor.birth_year}</div>
+            <div className='actor__item'>Hair color {Selectors.actor.hair_color}</div>
+            <div className='actor__item'>Gender: {Selectors.actor.gender}</div>
         </div>
       </div>
       }
 
       {
-        films && !isLoading &&
+        Selectors.films && !Selectors.isLoading &&
           <>
           <h3 className="title">Films</h3>
             <div className="box-list">
               {
-                actor.films.map((film) => {
+                Selectors.actor.films.map((film) => {
                   return (
                   <div className="box" key={Math.random()}>
                       <div className="box__title">{film.title}</div>
@@ -63,22 +74,22 @@ const ActorDetails = () => {
       }
 
       {
-        starships && !isLoading &&
+        Selectors.starships && !Selectors.isLoading &&
         <>
           <h3 className="title">Starships</h3>
           <div className="box-list">
           {
-            actor.starships.map((starship) => {
+            Selectors.starships.map((starship) => {
               return (
                 <div className="box" key={Math.random()}>
-                  <div className="box__title">{starship.name}</div>
+                  <div className="box__title">{Selectors.starships.name}</div>
                   <div className="box__content">
-                    <div className="box__item">Model: {starship.model}</div>
-                    <div className="box__item">Manufacturer: {starship.manufacturer}</div>
-                    <div className="box__item">Cost in credits: {starship.cost_in_credits}</div>
-                    <div className="box__item">length: {starship.length}</div>
-                    <div className="box__item">Max atmosphering speed: {starship.max_atmosphering_speed}</div>
-                    <div className="box__item">Crew: {starship.crew}</div>
+                    <div className="box__item">Model: {Selectors.starships.model}</div>
+                    <div className="box__item">Manufacturer: {Selectors.starships.manufacturer}</div>
+                    <div className="box__item">Cost in credits: {Selectors.starships.cost_in_credits}</div>
+                    <div className="box__item">length: {Selectors.starships.length}</div>
+                    <div className="box__item">Max atmosphering speed: {Selectors.starships.max_atmosphering_speed}</div>
+                    <div className="box__item">Crew: {Selectors.starships.crew}</div>
                   </div>
               </div>
               )

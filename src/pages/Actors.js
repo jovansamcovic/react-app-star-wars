@@ -4,12 +4,17 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getActorsFetch } from './../actions';
 import Loader from './../components/Loader/Loader';
+import { getActors } from '../selectors';
 
 const Actors = () => {
 
   const dispatch = useDispatch();
-  let actors = useSelector(state => state.appReducer.actors);
   const isLoading = useSelector(state => state.appReducer.isLoading);
+
+  const Selectors = {
+    actors: useSelector((state) => getActors(state))
+  }
+
 
 
   useEffect(() => {
@@ -20,10 +25,10 @@ const Actors = () => {
     <div className="container">
       <div className="starships">
         {isLoading && <Loader />}
-        {actors && !isLoading &&
+        {Selectors.actors && !isLoading &&
           <ul className='list'>
           {
-            actors.map((actor) => {
+            Selectors.actors.map((actor) => {
               return (
                 <li className='list__item' key={Math.random()}>
                   <NavLink to={`/actors/${actor.url.match("[0-9]")}`}>
