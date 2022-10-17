@@ -5,17 +5,19 @@ import defaultImage from './../img/default.jpg';
 import { useDispatch, useSelector } from "react-redux";
 import { getStarshipDetailsFetch } from './../actions';
 import Loader from "../components/Loader/Loader";
+import { getsStarship, getFilmsForStarship, isLoading } from './../selectors';
 
 const StarshipDetails = () => {
 
   const { id } = useParams();
   const [imgSrc, setImgSrc] = useState(`https://starwars-visualguide.com/assets/img/starships/${id}.jpg`);
   const dispatch = useDispatch();
-  const starship = useSelector(state => state.appReducer.starship);
-  const films = useSelector(state => state.appReducer.starship.films);
-  const isLoading = useSelector(state => state.appReducer.isLoading);
 
-
+  const Selectors = {
+    starship: useSelector(state => getsStarship(state)),
+    films: useSelector((state) => getFilmsForStarship(state)),
+    isLoading: useSelector((state) => isLoading(state))
+  }
 
   useEffect(() => {
     dispatch(getStarshipDetailsFetch(id));
@@ -25,13 +27,13 @@ const StarshipDetails = () => {
     <div className="container">
 
       <div className="starship">
-        {isLoading && <Loader />}
+        {Selectors.isLoading && <Loader />}
 
-        {!isLoading && <img className="starship__img" src={imgSrc} alt="error" onError={() => setImgSrc(defaultImage)} />}
+        {!Selectors.isLoading && <img className="starship__img" src={imgSrc} alt="error" onError={() => setImgSrc(defaultImage)} />}
 
-        {starship && !isLoading &&
+        {Selectors.starship && !Selectors.isLoading &&
           <div className="starship__details" key={Math.random()}>
-            <h3 className="starship__title">{starship.name}</h3>
+            <h3 className="starship__title">{Selectors.starship.name}</h3>
             <p className="starship__info">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Odio sapiente incidunt pariatur, quibusdam quidem hic laborum magni
@@ -40,24 +42,24 @@ const StarshipDetails = () => {
             </p>
 
             <div className="starship__items">
-              <div className="starship__item">Model: {starship.model}</div>
-              <div className="starship__item">Manufacturer: {starship.manufacturer}</div>
-              <div className="starship__item">Cost in credits: {starship.cost_in_credits}</div>
-              <div className="starship__item">Length: {starship.length}</div>
-              <div className="starship__item">Atmosperic: {starship.max_atmosphering_speed}</div>
-              <div className="starship__item">Crew: {starship.crew}</div>
+              <div className="starship__item">Model: {Selectors.starship.model}</div>
+              <div className="starship__item">Manufacturer: {Selectors.starship.manufacturer}</div>
+              <div className="starship__item">Cost in credits: {Selectors.starship.cost_in_credits}</div>
+              <div className="starship__item">Length: {Selectors.starship.length}</div>
+              <div className="starship__item">Atmosperic: {Selectors.starship.max_atmosphering_speed}</div>
+              <div className="starship__item">Crew: {Selectors.starship.crew}</div>
             </div>
           </div>
         }
       </div>
 
       {
-        films && !isLoading &&
+        Selectors.films && !isLoading &&
           <>
             <h3 className="title">Films</h3>
             <div className="box-list">
               {
-                films.map((film) => {
+                Selectors.films.map((film) => {
                   return (
                     <div className="box" key={Math.random()}>
                       <div className="box__title">{film.title}</div>

@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import './../../style/style.scss';
 import './Header.scss';
 
@@ -14,7 +15,9 @@ const Header = ({onShowLogin, onShowRegistration, loggedUser,onLogout}) => {
                   <i className="icon youtube"></i>
                   <i className="icon kids"></i>
             </div>
-            <div className="logo"></div>
+            <div className="logo">
+              <NavLink to="/"  className="logo__link"/>
+            </div>
             <div className="header__item">
                 <div className="search">
                   <input className="search__input" placeholder="Search Star Wars"/>

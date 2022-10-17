@@ -5,12 +5,16 @@ const registrationValidation = (name,value, password) => {
     if(value.length < 3) {
       error = "Use at least 4 characters!";
     }
+
+    return error;
  }
 
  if (name === "lastname") {
   if(value.trim().length < 3) {
     error = "Use at least 4 characters!";
   }
+
+  return error;
  }
 
  if (name === "email") {
@@ -19,6 +23,8 @@ const registrationValidation = (name,value, password) => {
   } else if (!/\S+@\S+\.\S+/.test(value)) {
     error = "Please enter a valid email address!";
   }
+
+  return error;
  }
 
   if(name === "displayname") {
@@ -28,6 +34,8 @@ const registrationValidation = (name,value, password) => {
     } else if (value.length < 4) {
       error = "Use at least 4 characters!";
     }
+
+    return error;
   }
 
   if(name === "password") {
@@ -38,12 +46,16 @@ const registrationValidation = (name,value, password) => {
     } else if (!/^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i.test(value)) {
       error = "The password is too easilly guessed.";
     }
+
+    return error;
   }
 
   if(name === "confirmPassword") {
     if(value !== password) {
       error = "Passwords do not match!";
     }
+
+    return error;
   }
 
   return error;

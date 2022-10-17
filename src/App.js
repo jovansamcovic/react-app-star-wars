@@ -53,7 +53,7 @@ function App() {
 
       {showLogin && <LoginModal onCloseModal={closeModalHandler} onUserLogin={userLoginHandler} />}
       {showRegistration && <RegistrationModal onCloseModal={closeModalHandler} onSubmitRegistrationForm={submitRegistrationFormhandler}/>}
-
+      <Router>
       <Header
         loggedUser={loggedUser}
         onShowLogin={showLoginHandler}
@@ -62,7 +62,7 @@ function App() {
       />
 
       <main className="main">
-        <Router>
+
           <Nav />
           <Routes>
             <Route exact path="/" element={<Home />} />
@@ -72,9 +72,9 @@ function App() {
             <Route exact path='/actors' element={<Actors />} />
             <Route  path='/actors/:id' element={<ActorDetails />} />
           </Routes>
-        </Router>
-      </main>
 
+      </main>
+      </Router>
       <Footer />
 
     </div>
