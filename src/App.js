@@ -1,64 +1,84 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './style/style.scss';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home';
 import Starships from './pages/Starships';
-import LoginModal from './components/Modal/LoginModal';
-import RegistrationModal from './components/Modal/RegistrationModal';
 import Nav from './components/Nav/Nav';
 import Actors from './pages/Actors';
 import StarshipDetails from './pages/StarshipDetails';
 import ActorDetails from './pages/ActorDetails';
 import useLocalstorage from './utils/useLocalstorage';
+import Modals from './components/Modals';
+import { getActiveModal } from './selectors';
+import { setActiveModal } from './actions';
+import { MODALS } from './constants';
+import { useState } from 'react';
 
-function App() {
+const App = () => {
 
-  const [showLogin, setShowLogin] = useState(false);
-  const [showRegistration, setShowRegistration] = useState(false);
+  const dispatch = useDispatch();
   const [loggedUser, setLoggedUser] = useLocalstorage('login',{ diplay: "", login: false });
 
-  const closeModalHandler = () => {
-    setShowLogin(false);
-    setShowRegistration(false);
+  const Actions = {
+    setActiveModal: (payload) => dispatch(setActiveModal(payload)),
+  };
+
+  const Selectors = {
+    activeModal: useSelector((state) => getActiveModal(state))
   }
 
-  const showLoginHandler = () => {
-    setShowLogin(!showLogin);
-  }
-
-  const showRegistrationHandler = () => {
-    setShowRegistration(!showRegistration);
-  }
-
-  const userLoginHandler = (user) => {
-    setLoggedUser(user);
-    localStorage.setItem('login', JSON.stringify({ display: user.display, login: true }));
-    closeModalHandler();
-  }
-
-  const submitRegistrationFormhandler = () => {
-    closeModalHandler();
-  }
 
   const logoutHandler = () => {
     localStorage.setItem('login', JSON.stringify({ display: "", login: false }));
     setLoggedUser({ display: "", login: false });
   }
 
+
+  const toggleLoginModal = () => {
+    if (Selectors.activeModal !== MODALS.LOGIN_MODAL) {
+      Actions.setActiveModal({ activeModal: MODALS.LOGIN_MODAL });
+    } else {
+      Actions.setActiveModal({ activeModal: '' });
+    }
+  };
+
+  const toggleRegistrationModal = () => {
+    if (Selectors.activeModal !== MODALS.REGISTRATION_MODAL) {
+      Actions.setActiveModal({activeModal: MODALS.REGISTRATION_MODAL});
+    } else {
+      Actions.setActiveModal({activeModal: ""})
+    }
+  }
+
+
+  const closeModal = () => {
+    Actions.setActiveModal({ activeModal: '' });
+  }
+
+  const registrationCompleteHandler = (payload) => {
+    localStorage.setItem('login', JSON.stringify({ display: payload.diplay, login: true }));
+    setLoggedUser({ display: payload.diplay, login: true });
+    closeModal();
+  }
+
+  const userLoginHandler = (user) => {
+    setLoggedUser(user);
+    localStorage.setItem('login', JSON.stringify({ display: user.display, login: true }));
+    closeModal();
+  }
+
+
+
   return (
-
     <div className="app">
-
-      {showLogin && <LoginModal onCloseModal={closeModalHandler} onUserLogin={userLoginHandler} />}
-      {showRegistration && <RegistrationModal onCloseModal={closeModalHandler} onSubmitRegistrationForm={submitRegistrationFormhandler}/>}
       <Router>
       <Header
         loggedUser={loggedUser}
-        onShowLogin={showLoginHandler}
-        onShowRegistration={showRegistrationHandler}
         onLogout={logoutHandler}
+        toggleLoginModal={toggleLoginModal}
+        toggleRegistrationModal={toggleRegistrationModal}
       />
 
       <main className="main">
@@ -73,6 +93,7 @@ function App() {
             <Route  path='/actors/:id' element={<ActorDetails />} />
           </Routes>
 
+      <Modals activeModal={Selectors.activeModal} closeModal={closeModal} onLogin={userLoginHandler} onRegistrationComplete={registrationCompleteHandler}/>
       </main>
       </Router>
       <Footer />

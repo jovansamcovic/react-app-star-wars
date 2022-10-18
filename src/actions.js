@@ -11,6 +11,13 @@ export const GET_STARSHIP_DETAILS_FETCH = "GET_STARSHIP_DETAILS_FETCH";
 export const GET_STARSHIP_DETAILS_FETCH_SUCCESS = "GET_STARSHIP_DETAILS_FETCH_SUCCESS";
 
 export const SET_IS_LOADING = 'SET_IS_LOADING';
+export const SET_ACTIVE_MODAL = 'SET_ACTIVE_MODAL';
+
+
+export const setActiveModal = (payload) => ({
+  type: SET_ACTIVE_MODAL,
+  payload: payload
+})
 
 export const getActorsFetch = () => ({
   type: GET_ACTORS_FETCH

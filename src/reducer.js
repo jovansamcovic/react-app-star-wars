@@ -3,7 +3,8 @@ import {
   GET_STARSHIPS_FETCH_SUCCESS,
   GET_ACTOR_DETAILS_FETCH_SUCCESS,
   GET_STARSHIP_DETAILS_FETCH_SUCCESS,
-  SET_IS_LOADING
+  SET_IS_LOADING,
+   SET_ACTIVE_MODAL
 } from './actions';
 
 
@@ -17,11 +18,17 @@ const initalState = {
   },
   starship: {
     films: []
-  }
+  },
+  activeModal: '',
 }
 
 const appReducer = (state = initalState, action) => {
   switch (action.type) {
+    case SET_ACTIVE_MODAL:
+      return {
+        ...state,
+        activeModal: action.payload?.activeModal ?? ''
+      }
     case SET_IS_LOADING:
       return {
         ...state,
