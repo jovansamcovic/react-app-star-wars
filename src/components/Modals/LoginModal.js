@@ -3,7 +3,7 @@ import './../../style/style.scss';
 import './Modal.scss';
 import Input from '../Input/Input';
 
-const LoginModal = ({ onCloseModal, onUserLogin }) => {
+const LoginModal = ({ onCloseModal, onUserLogin, onLogout }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

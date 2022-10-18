@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import './../../style/style.scss';
 import './Header.scss';
 
-const Header = ({onShowLogin, onShowRegistration, loggedUser,onLogout}) => {
-
+const Header = ({ loggedUser,onLogout, toggleLoginModal, toggleRegistrationModal}) => {
+  console.log("user: " +loggedUser.display);
   return (
     <header>
       <div className="container">
@@ -35,8 +36,8 @@ const Header = ({onShowLogin, onShowRegistration, loggedUser,onLogout}) => {
                      </div>
                   ): (
                     <div className='my-account__wrap'>
-                    <button className="my-account__btn" onClick={onShowLogin}>LOG IN</button>
-                    <button className="my-account__btn" onClick={onShowRegistration}>SIGN IN</button>
+                    <button className="my-account__btn" onClick={toggleLoginModal}>LOG IN</button>
+                    <button className="my-account__btn" onClick={toggleRegistrationModal}>SIGN IN</button>
                   </div>
                   )}
                 </div>

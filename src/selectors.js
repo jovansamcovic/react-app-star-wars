@@ -6,3 +6,4 @@ export const getFilmsForActor = (state) => state.appReducer.actor.films;
 export const getStarshipsForActor = (state) => state.appReducer.actor.starships;
 export const getsStarship = (state) => state.appReducer.starship;
 export const getFilmsForStarship = (state) => state.appReducer.starship.films;
+export const getActiveModal = (state) => state.appReducer.activeModal;

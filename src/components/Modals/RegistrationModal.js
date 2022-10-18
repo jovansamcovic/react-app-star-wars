@@ -4,7 +4,7 @@ import './Modal.scss';
 import Input from '../Input/Input';
 import registrationValidation from '../../utils/registrationValidation';
 
-const RegistrationModal = ({ onCloseModal, onSubmitRegistrationForm }) => {
+const RegistrationModal = ({ onCloseModal, onRegistrationComplete }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isFormValid, setIsFormValid] = useState(true);
@@ -155,7 +155,7 @@ const RegistrationModal = ({ onCloseModal, onSubmitRegistrationForm }) => {
 
       localStorage.setItem('users', JSON.stringify(users));
 
-      onSubmitRegistrationForm();
+      onRegistrationComplete({ diplay: newUser.displayname, login: true });
 
     } else {
       setIsFormValid(false);
