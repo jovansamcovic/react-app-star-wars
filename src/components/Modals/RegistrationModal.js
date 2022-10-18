@@ -10,12 +10,12 @@ const RegistrationModal = ({ onCloseModal, onRegistrationComplete }) => {
   const [isFormValid, setIsFormValid] = useState(true);
 
 
-  const [firstname, setFirstname] = useState();
-  const [lastname, setLastname] = useState();
-  const [email, setEmail] = useState();
-  const [displayname, setDisplayname] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [displayname, setDisplayname] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
 
   const [firstnameError, setFirstnameError] = useState(false);
