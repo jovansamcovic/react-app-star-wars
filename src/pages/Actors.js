@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getActorsFetch, setActiveModal } from './../actions';
 import Loader from './../components/Loader/Loader';
 import { getActiveModal, getActors, getError } from '../selectors';
-import Modals from '../components/Modals';
 import { MODALS } from '../constants';
 
 const Actors = () => {

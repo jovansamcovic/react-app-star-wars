@@ -3,9 +3,9 @@ import './../style/style.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getActorDetailsFetch } from './../actions';
-import { isLoading } from '../selectors';
-
+import { getActorDetailsFetch, setActiveModal, setError } from './../actions';
+import { getError, isLoading } from '../selectors';
+import { MODALS } from '../constants';
 import Loader from '../components/Loader/Loader';
 
 import {
@@ -23,12 +23,24 @@ const ActorDetails = () => {
     actor: useSelector(state => getActor(state)),
     films: useSelector(state => getFilmsForActor(state)),
     starships: useSelector(state => getStarshipsForActor(state)),
-    isLoading: useSelector((state) => isLoading(state))
+    isLoading: useSelector((state) => isLoading(state)),
+    error: useSelector((state) => getError(state))
   }
+
+
+  const Actions = {
+    setActiveModal: (payload) => dispatch(setActiveModal(payload)),
+  };
 
   useEffect(() => {
     dispatch(getActorDetailsFetch(id));
   },[id, dispatch])
+
+  useEffect(() => {
+    if(Selectors.error) {
+      Actions.setActiveModal({ activeModal: MODALS.ERROR });
+    }
+  },[Selectors.error])
 
   return (
     <div className='container'>
@@ -82,14 +94,14 @@ const ActorDetails = () => {
             Selectors.starships.map((starship) => {
               return (
                 <div className="box" key={Math.random()}>
-                  <div className="box__title">{Selectors.starships.name}</div>
+                  <div className="box__title">{starship.name}</div>
                   <div className="box__content">
-                    <div className="box__item">Model: {Selectors.starships.model}</div>
-                    <div className="box__item">Manufacturer: {Selectors.starships.manufacturer}</div>
-                    <div className="box__item">Cost in credits: {Selectors.starships.cost_in_credits}</div>
-                    <div className="box__item">length: {Selectors.starships.length}</div>
-                    <div className="box__item">Max atmosphering speed: {Selectors.starships.max_atmosphering_speed}</div>
-                    <div className="box__item">Crew: {Selectors.starships.crew}</div>
+                    <div className="box__item">Model: {starship.model}</div>
+                    <div className="box__item">Manufacturer: {starship.manufacturer}</div>
+                    <div className="box__item">Cost in credits: {starship.cost_in_credits}</div>
+                    <div className="box__item">length: {starship.length}</div>
+                    <div className="box__item">Max atmosphering speed: {starship.max_atmosphering_speed}</div>
+                    <div className="box__item">Crew: {starship.crew}</div>
                   </div>
               </div>
               )

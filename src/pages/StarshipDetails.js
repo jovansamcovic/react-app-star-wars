@@ -3,9 +3,10 @@ import './../style/style.scss';
 import { useEffect, useState } from "react";
 import defaultImage from './../img/default.jpg';
 import { useDispatch, useSelector } from "react-redux";
-import { getStarshipDetailsFetch } from './../actions';
+import { getStarshipDetailsFetch, setActiveModal } from './../actions';
 import Loader from "../components/Loader/Loader";
-import { getsStarship, getFilmsForStarship, isLoading } from './../selectors';
+import { getsStarship, getFilmsForStarship, isLoading, getError } from './../selectors';
+import { MODALS } from '../constants';
 
 const StarshipDetails = () => {
 
@@ -16,12 +17,24 @@ const StarshipDetails = () => {
   const Selectors = {
     starship: useSelector(state => getsStarship(state)),
     films: useSelector((state) => getFilmsForStarship(state)),
-    isLoading: useSelector((state) => isLoading(state))
+    isLoading: useSelector((state) => isLoading(state)),
+    error: useSelector((state) => getError(state))
   }
+
+  const Actions = {
+    setActiveModal: (payload) => dispatch(setActiveModal(payload)),
+  };
 
   useEffect(() => {
     dispatch(getStarshipDetailsFetch(id));
   }, [id, dispatch])
+
+
+  useEffect(() => {
+    if(Selectors.error) {
+      Actions.setActiveModal({ activeModal: MODALS.ERROR });
+    }
+  },[Selectors.error])
 
   return (
     <div className="container">

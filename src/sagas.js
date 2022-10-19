@@ -21,19 +21,30 @@ import {
 
 //   Actor Details
 async function actorDetailsFetch (id) {
-  let actor = await getData(`https://swapi.dev/api/people/${id}`, false);
-  let films = await retrieveList(actor.films);
-  let starships = await retrieveList(actor.starships);
-  actor.films = films;
-  actor.starships = starships;
-  console.log(actor.starships);
-  return actor;
+  let response = await getData(`https://swapi.dev/api/people/${id}`, false);
+
+  if (typeof response !== 'string') {
+    let films = await retrieveList(response.films);
+    let starships = await retrieveList(response.starships);
+    response.films = films;
+    response.starships = starships;
+  }
+
+  return response;
 }
 
 function* getActorDetailsFetch (action) {
   yield put({type: SET_IS_LOADING, isLoading: true});
-  const actor = yield call(actorDetailsFetch, action.payload)
-  yield put({type: GET_ACTOR_DETAILS_FETCH_SUCCESS, actor: actor})
+
+  const response = yield call(actorDetailsFetch, action.payload);
+
+
+  if (typeof response !== 'string') {
+    yield put({type: GET_ACTOR_DETAILS_FETCH_SUCCESS, actor: response})
+  } else {
+    yield put({type: SET_ERROR, error: response});
+  }
+
   yield put({type: SET_IS_LOADING, isLoading: false});
 }
 //
@@ -43,15 +54,24 @@ function* getActorDetailsFetch (action) {
 // Starship Details
 async function starshipDetailsFetch (id) {
   let starship = await getData(`https://swapi.dev/api/starships/${id}`, false);
-  let films = await retrieveList(starship.films);
-  starship.films = films;
+
+  if (typeof starship !== 'string') {
+    let films = await retrieveList(starship.films);
+    starship.films = films;
+  }
   return starship;
 }
 
 function* getStarshipDetailsFetch (action) {
   yield put({type: SET_IS_LOADING, isLoading: true});
-  const starship = yield call(starshipDetailsFetch, action.payload)
-  yield put({type: GET_STARSHIP_DETAILS_FETCH_SUCCESS, starship: starship})
+  const response = yield call(starshipDetailsFetch, action.payload)
+
+  if (typeof response !== 'string') {
+    yield put({type: GET_STARSHIP_DETAILS_FETCH_SUCCESS, starship: response})
+  } else {
+    yield put({type: SET_ERROR, error: response});
+  }
+
   yield put({type: SET_IS_LOADING, isLoading: false});
 }
 
@@ -70,8 +90,14 @@ async function  starshipsFetch () {
 // GET ALL Starships
 function* getStarshipsFetch () {
   yield put({type: SET_IS_LOADING, isLoading: true});
-  const starships = yield call(starshipsFetch);
-  yield put({type: GET_STARSHIPS_FETCH_SUCCESS, starships: starships});
+  const response = yield call(starshipsFetch);
+
+  if (typeof response !== 'string') {
+    yield put({type: GET_STARSHIPS_FETCH_SUCCESS, starships: response});
+  } else {
+    yield put({type: SET_ERROR, error: response});
+  }
+
   yield put({type: SET_IS_LOADING, isLoading: false});
 }
 //
