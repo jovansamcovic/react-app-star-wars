@@ -13,6 +13,8 @@ export const GET_STARSHIP_DETAILS_FETCH_SUCCESS = "GET_STARSHIP_DETAILS_FETCH_SU
 export const SET_IS_LOADING = 'SET_IS_LOADING';
 export const SET_ACTIVE_MODAL = 'SET_ACTIVE_MODAL';
 
+export const SET_ERROR = 'SET_ERROR';
+
 
 export const setActiveModal = (payload) => ({
   type: SET_ACTIVE_MODAL,

@@ -11,10 +11,9 @@ import StarshipDetails from './pages/StarshipDetails';
 import ActorDetails from './pages/ActorDetails';
 import useLocalstorage from './utils/useLocalstorage';
 import Modals from './components/Modals';
-import { getActiveModal } from './selectors';
+import { getActiveModal, getError } from './selectors';
 import { setActiveModal } from './actions';
 import { MODALS } from './constants';
-import { useState } from 'react';
 
 const App = () => {
 
@@ -26,7 +25,8 @@ const App = () => {
   };
 
   const Selectors = {
-    activeModal: useSelector((state) => getActiveModal(state))
+    activeModal: useSelector((state) => getActiveModal(state)),
+    error: useSelector((state) => getError(state))
   }
 
 
@@ -70,7 +70,6 @@ const App = () => {
   }
 
 
-
   return (
     <div className="app">
       <Router>
@@ -93,7 +92,7 @@ const App = () => {
             <Route  path='/actors/:id' element={<ActorDetails />} />
           </Routes>
 
-      <Modals activeModal={Selectors.activeModal} closeModal={closeModal} onLogin={userLoginHandler} onRegistrationComplete={registrationCompleteHandler}/>
+      <Modals activeModal={Selectors.activeModal} closeModal={closeModal} onLogin={userLoginHandler} onRegistrationComplete={registrationCompleteHandler} message={Selectors.error}/>
       </main>
       </Router>
       <Footer />

@@ -1,12 +1,10 @@
 import { MODALS } from "../../constants";
 import LoginModal from "./LoginModal";
 import RegistrationModal from "./RegistrationModal";
-import useLocalstorage from './../../utils/useLocalstorage';
+import InfoModal from './InfoModal';
+import './../../style/style.scss';
 
-const Modals = ({activeModal, closeModal, onRegistrationComplete, onLogin, logoutHandler}) => {
-
-  const [loggedUser, setLoggedUser] = useLocalstorage('login',{ diplay: "", login: false });
-
+const Modals = ({activeModal, closeModal, onRegistrationComplete, onLogin, message}) => {
 
   const Modal = () => {
     switch (activeModal) {
@@ -14,6 +12,10 @@ const Modals = ({activeModal, closeModal, onRegistrationComplete, onLogin, logou
         return <LoginModal onCloseModal={closeModal}  onUserLogin={onLogin}/>
       case MODALS.REGISTRATION_MODAL:
         return <RegistrationModal onCloseModal={closeModal} onRegistrationComplete={onRegistrationComplete}/>
+      case MODALS.ERROR:
+      return <InfoModal message={message} onCloseModal={closeModal}/>
+      default:
+        return;
     }
   }
 

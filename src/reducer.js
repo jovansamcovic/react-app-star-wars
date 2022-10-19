@@ -4,7 +4,8 @@ import {
   GET_ACTOR_DETAILS_FETCH_SUCCESS,
   GET_STARSHIP_DETAILS_FETCH_SUCCESS,
   SET_IS_LOADING,
-   SET_ACTIVE_MODAL
+  SET_ACTIVE_MODAL,
+  SET_ERROR
 } from './actions';
 
 
@@ -20,10 +21,16 @@ const initalState = {
     films: []
   },
   activeModal: '',
+  error: ''
 }
 
 const appReducer = (state = initalState, action) => {
   switch (action.type) {
+    case SET_ERROR:
+      return {
+        ...state,
+        error: action.error
+      }
     case SET_ACTIVE_MODAL:
       return {
         ...state,
