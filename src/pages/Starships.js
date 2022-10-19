@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import './../style/style.scss';
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { getStarshipsFetch } from './../actions';
+import { getStarshipsFetch, setActiveModal } from './../actions';
 import Loader from '../components/Loader/Loader';
-import { getStarships, isLoading } from '../selectors';
+import { getError, getStarships, isLoading } from '../selectors';
+import { MODALS } from '../constants';
 
 const Starships = () => {
 
@@ -12,12 +13,23 @@ const Starships = () => {
 
   const Selectors = {
     starships: useSelector((state) => getStarships(state)),
-    isLoading: useSelector((state) => isLoading(state))
+    isLoading: useSelector((state) => isLoading(state)),
+    error: useSelector((state) => getError(state))
   }
+
+  const Actions = {
+    setActiveModal: (payload) => dispatch(setActiveModal(payload)),
+  };
 
   useEffect(() => {
     dispatch(getStarshipsFetch());
   }, [dispatch])
+
+  useEffect(() => {
+    if(Selectors.error) {
+      Actions.setActiveModal({ activeModal: MODALS.ERROR });
+    }
+  },[Selectors.error])
 
   return (
     <div className="container">

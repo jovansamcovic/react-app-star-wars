@@ -15,6 +15,10 @@ export const SET_ACTIVE_MODAL = 'SET_ACTIVE_MODAL';
 
 export const SET_ERROR = 'SET_ERROR';
 
+export const setError = (payload) => ({
+  type: SET_ERROR,
+  payload: payload
+})
 
 export const setActiveModal = (payload) => ({
   type: SET_ACTIVE_MODAL,

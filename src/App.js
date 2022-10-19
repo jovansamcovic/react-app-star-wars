@@ -12,7 +12,7 @@ import ActorDetails from './pages/ActorDetails';
 import useLocalstorage from './utils/useLocalstorage';
 import Modals from './components/Modals';
 import { getActiveModal, getError } from './selectors';
-import { setActiveModal } from './actions';
+import { setActiveModal, setError } from './actions';
 import { MODALS } from './constants';
 
 const App = () => {
@@ -22,6 +22,7 @@ const App = () => {
 
   const Actions = {
     setActiveModal: (payload) => dispatch(setActiveModal(payload)),
+    setError: (payload) => dispatch(setError(payload))
   };
 
   const Selectors = {
@@ -55,6 +56,10 @@ const App = () => {
 
   const closeModal = () => {
     Actions.setActiveModal({ activeModal: '' });
+
+    if (Selectors.activeModal === MODALS.ERROR) {
+      Actions.setError({error: ''})
+    }
   }
 
   const registrationCompleteHandler = (payload) => {
