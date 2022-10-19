@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import './../style/style.scss';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getActorsFetch } from './../actions';
+import { getActorsFetch, setActiveModal } from './../actions';
 import Loader from './../components/Loader/Loader';
-import { getActors } from '../selectors';
+import { getActiveModal, getActors, getError } from '../selectors';
+import Modals from '../components/Modals';
+import { MODALS } from '../constants';
 
 const Actors = () => {
 
@@ -12,14 +14,27 @@ const Actors = () => {
   const isLoading = useSelector(state => state.appReducer.isLoading);
 
   const Selectors = {
-    actors: useSelector((state) => getActors(state))
+    activeModal: useSelector((state) => getActiveModal(state)),
+    actors: useSelector((state) => getActors(state)),
+    error: useSelector((state) => getError(state)),
   }
 
+   const Actions = {
+    setActiveModal: (payload) => dispatch(setActiveModal(payload)),
+  };
 
 
   useEffect(() => {
     dispatch(getActorsFetch());
   }, [dispatch])
+
+
+  useEffect(() => {
+    if(Selectors.error) {
+      Actions.setActiveModal({ activeModal: MODALS.ERROR });
+    }
+  },[Selectors.error])
+
 
   return (
     <div className="container">

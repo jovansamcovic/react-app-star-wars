@@ -11,8 +11,7 @@ const getData = async (url, getAll) => {
 
     return result
   } catch (err) {
-    if (axios.isCancel(err)) console.log('axios cancel');
-    else console.log(err);
+    return err.message;
   }
 }
 

@@ -13,7 +13,7 @@ import {
   GET_STARSHIP_DETAILS_FETCH,
   GET_STARSHIP_DETAILS_FETCH_SUCCESS,
   SET_IS_LOADING,
-  SET_ACTIVE_MODAL,
+  SET_ERROR
 }  from './actions';
 
 
@@ -86,8 +86,14 @@ async function  actorsFetch () {
 
 function* getActorsFetch () {
   yield put({type: SET_IS_LOADING, isLoading: true});
-  const actors = yield call(actorsFetch);
-  yield put({type: GET_ACTORS_FETCH_SUCCESS, actors: actors})
+  const response = yield call(actorsFetch);
+
+  if (typeof response !== 'string') {
+    yield put({type: GET_ACTORS_FETCH_SUCCESS, actors: response})
+  } else {
+    yield put({type: SET_ERROR, error: response});
+  }
+
   yield put({type: SET_IS_LOADING, isLoading: false});
 }
 //
