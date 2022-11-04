@@ -67,7 +67,7 @@ const Carousel = () => {
   useEffect(() => {
     intervalSlider.current =  setInterval(() => {
         setCurrent(current => current === carouselData.length - 1 ? 0 : current + 1);
-    },20000)
+    },4000)
 
     return () => clearInterval(intervalSlider.current);
   })
