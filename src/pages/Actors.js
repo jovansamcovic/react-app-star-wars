@@ -18,10 +18,6 @@ const Actors = () => {
     error: useSelector((state) => getError(state)),
   }
 
-   const Actions = {
-    setActiveModal: (payload) => dispatch(setActiveModal(payload)),
-  };
-
 
   useEffect(() => {
     dispatch(getActorsFetch());
@@ -30,9 +26,9 @@ const Actors = () => {
 
   useEffect(() => {
     if(Selectors.error) {
-      Actions.setActiveModal({ activeModal: MODALS.ERROR });
+      dispatch(setActiveModal({ activeModal: MODALS.ERROR }));
     }
-  },[Selectors.error])
+  },[Selectors.error,dispatch])
 
 
   return (
