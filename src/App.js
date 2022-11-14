@@ -100,7 +100,10 @@ const App = () => {
       <Modals activeModal={Selectors.activeModal} closeModal={closeModal} onLogin={userLoginHandler} onRegistrationComplete={registrationCompleteHandler} message={Selectors.error}/>
       </main>
       </Router>
-      <Footer />
+
+     <footer>
+        <Footer />
+     </footer>
 
     </div>
   );
