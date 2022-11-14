@@ -3,7 +3,7 @@ import './../style/style.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getActorDetailsFetch, setActiveModal, setError } from './../actions';
+import { getActorDetailsFetch, setActiveModal } from './../actions';
 import { getError, isLoading } from '../selectors';
 import { MODALS } from '../constants';
 import Loader from '../components/Loader/Loader';
@@ -27,20 +27,15 @@ const ActorDetails = () => {
     error: useSelector((state) => getError(state))
   }
 
-
-  const Actions = {
-    setActiveModal: (payload) => dispatch(setActiveModal(payload)),
-  };
-
   useEffect(() => {
     dispatch(getActorDetailsFetch(id));
   },[id, dispatch])
 
   useEffect(() => {
     if(Selectors.error) {
-      Actions.setActiveModal({ activeModal: MODALS.ERROR });
+      dispatch(setActiveModal({ activeModal: MODALS.ERROR }));
     }
-  },[Selectors.error])
+  },[Selectors.error,dispatch])
 
   return (
     <div className='container'>

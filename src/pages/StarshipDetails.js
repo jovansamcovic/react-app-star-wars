@@ -21,9 +21,6 @@ const StarshipDetails = () => {
     error: useSelector((state) => getError(state))
   }
 
-  const Actions = {
-    setActiveModal: (payload) => dispatch(setActiveModal(payload)),
-  };
 
   useEffect(() => {
     dispatch(getStarshipDetailsFetch(id));
@@ -32,9 +29,9 @@ const StarshipDetails = () => {
 
   useEffect(() => {
     if(Selectors.error) {
-      Actions.setActiveModal({ activeModal: MODALS.ERROR });
+      dispatch(setActiveModal({ activeModal: MODALS.ERROR }));
     }
-  },[Selectors.error])
+  },[Selectors.error,dispatch])
 
   return (
     <div className="container">
